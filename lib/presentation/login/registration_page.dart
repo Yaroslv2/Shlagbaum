@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shlagbaum/application/bloc/auth/auth_bloc.dart';
 import 'package:shlagbaum/application/bloc/login_page/login_page_cubit.dart';
 
 class RegistrationControllers {
@@ -20,6 +21,7 @@ class RegistrationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           leading: IconButton(
             onPressed: () {
@@ -37,44 +39,73 @@ class RegistrationPage extends StatelessWidget {
             horizontal: 15,
           ),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Text(
-                "Регистрация",
-                style: Theme.of(context).textTheme.headlineMedium,
+              Flexible(
+                flex: 1,
+                child: Text(
+                  "Регистрация",
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
               ),
-              _RegistrationForm(),
-              Column(
-                children: [
-                  SizedBox(
-                    height: 40,
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.black,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+              const Flexible(
+                flex: 4,
+                child: _RegistrationForm(),
+              ),
+              Flexible(
+                flex: 1,
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 40,
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (registrationControllers.key.currentState!
+                              .validate()) {
+                            BlocProvider.of<AuthBloc>(context).add(
+                              AuthEvent.registration(
+                                name:
+                                    registrationControllers.nameController.text,
+                                lastname: registrationControllers
+                                    .lastnameController.text,
+                                phoneNumber: registrationControllers
+                                    .phoneNumberController.text,
+                                password: registrationControllers
+                                    .passwordController.text,
+                                carNumber: registrationControllers
+                                    .carNumberController.text,
+                              ),
+                            );
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.black,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        child: Text(
+                          "Зарегистрироваться",
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium!
+                              .copyWith(color: Colors.white),
                         ),
                       ),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        BlocProvider.of<LoginPageCubit>(context)
+                            .GoToLoginPage();
+                      },
                       child: Text(
-                        "Зарегистрироваться",
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium!
-                            .copyWith(color: Colors.white),
+                        "Уже есть аккаунт?",
+                        style: Theme.of(context).textTheme.bodySmall,
                       ),
                     ),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      BlocProvider.of<LoginPageCubit>(context).GoToLoginPage();
-                    },
-                    child: Text(
-                      "Уже есть аккаунт?",
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ],
           ),
@@ -85,7 +116,7 @@ class RegistrationPage extends StatelessWidget {
 }
 
 class _RegistrationForm extends StatefulWidget {
-  const _RegistrationForm({super.key});
+  const _RegistrationForm();
 
   @override
   State<_RegistrationForm> createState() => __RegistrationFormState();
@@ -97,6 +128,7 @@ class __RegistrationFormState extends State<_RegistrationForm> {
     return Form(
       key: registrationControllers.key,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           TextFormField(
             controller: registrationControllers.phoneNumberController,
@@ -105,6 +137,10 @@ class __RegistrationFormState extends State<_RegistrationForm> {
               label: Text(
                 "Телефон",
                 style: Theme.of(context).textTheme.bodySmall,
+              ),
+              prefixIcon: const Icon(
+                Icons.phone,
+                color: Colors.black,
               ),
               border: OutlineInputBorder(
                 borderSide: const BorderSide(color: Colors.grey),
@@ -130,6 +166,10 @@ class __RegistrationFormState extends State<_RegistrationForm> {
                 "Имя",
                 style: Theme.of(context).textTheme.bodySmall,
               ),
+              prefixIcon: const Icon(
+                Icons.account_circle_rounded,
+                color: Colors.black,
+              ),
               border: OutlineInputBorder(
                 borderSide: const BorderSide(color: Colors.grey),
                 borderRadius: BorderRadius.circular(10),
@@ -153,6 +193,10 @@ class __RegistrationFormState extends State<_RegistrationForm> {
               label: Text(
                 "Фамилия",
                 style: Theme.of(context).textTheme.bodySmall,
+              ),
+              prefixIcon: const Icon(
+                Icons.account_circle_rounded,
+                color: Colors.black,
               ),
               border: OutlineInputBorder(
                 borderSide: const BorderSide(color: Colors.grey),
@@ -178,6 +222,10 @@ class __RegistrationFormState extends State<_RegistrationForm> {
                 "Номер машины",
                 style: Theme.of(context).textTheme.bodySmall,
               ),
+              prefixIcon: const Icon(
+                Icons.directions_car_sharp,
+                color: Colors.black,
+              ),
               border: OutlineInputBorder(
                 borderSide: const BorderSide(color: Colors.grey),
                 borderRadius: BorderRadius.circular(10),
@@ -201,6 +249,10 @@ class __RegistrationFormState extends State<_RegistrationForm> {
               label: Text(
                 "Пароль",
                 style: Theme.of(context).textTheme.bodySmall,
+              ),
+              prefixIcon: const Icon(
+                Icons.vpn_key_rounded,
+                color: Colors.black,
               ),
               border: OutlineInputBorder(
                 borderSide: const BorderSide(color: Colors.grey),
