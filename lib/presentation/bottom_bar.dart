@@ -28,7 +28,20 @@ class _BottomBarState extends State<BottomBar> {
       body: _pages.elementAt(_currentIndex),
       bottomNavigationBar: BottomNavigationBar(
         elevation: 0,
-        items: const [],
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.directions_car_filled_sharp,
+            ),
+            label: "Home",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.account_circle_rounded,
+            ),
+            label: "account",
+          ),
+        ],
         currentIndex: _currentIndex,
         onTap: _onTap,
       ),

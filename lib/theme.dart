@@ -3,10 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 ThemeData theme = ThemeData(
   primarySwatch: Colors.blue,
-  appBarTheme: const AppBarTheme(
-    elevation: 0,
-    backgroundColor: Colors.white10
-  ),
+  appBarTheme: const AppBarTheme(elevation: 0, backgroundColor: Colors.white10),
   bottomAppBarTheme: const BottomAppBarTheme(elevation: 0),
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
     elevation: 0,
@@ -24,5 +21,8 @@ ThemeData theme = ThemeData(
         color: Colors.black, fontSize: 16, fontWeight: FontWeight.w400),
     headlineMedium: GoogleFonts.anonymousPro(
         color: Colors.black, fontSize: 32, fontWeight: FontWeight.bold),
+  ),
+  floatingActionButtonTheme: FloatingActionButtonThemeData(
+    elevation: 0,
   ),
 );

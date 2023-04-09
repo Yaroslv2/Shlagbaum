@@ -7,11 +7,16 @@ import 'package:shlagbaum/application/service/storage.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 
 class AuthService {
-  final Dio _dio = Dio(BaseOptions(
-    baseUrl: url,
-    contentType: "application/json",
-    headers: {"Content-Type": "application/json", "Accept": "application/json"},
-  ));
+  final Dio _dio = Dio(
+    BaseOptions(
+      baseUrl: url,
+      contentType: "application/json",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+      },
+    ),
+  );
   final Storage _storage = Storage();
 
   Future<bool> loginWithToken() async {
