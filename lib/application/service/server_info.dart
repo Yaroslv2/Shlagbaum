@@ -1,6 +1,6 @@
-const url = "";
+const url = "https://Vadim1.pythonanywhere.com";
 
-const loginWithTokenRoute = "";
+const loginWithTokenRoute = "/check_user";
 
 const loginWithPasswordRoute = "/login";
 

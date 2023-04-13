@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: theme,
-      home: BottomBar(),
+      home: Authefication(),
     );
   }
 }
@@ -54,6 +54,7 @@ class Authefication extends StatelessWidget {
                   );
                 }
                 ScaffoldMessenger.of(context).showSnackBar(snackbar);
+                BlocProvider.of<AuthBloc>(context).emit(UserNotAutheficated());
               }
             },
             child: BlocBuilder<AuthBloc, AuthState>(

@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:shlagbaum/application/service/authefication_service.dart';
+import 'package:shlagbaum/models/response.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -31,7 +32,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Future _userLogin(_Login event, Emitter<AuthState> emit) async {
     emit(AuthStateLoading());
 
-    final response =
+    final MyResponse response =
         await _authService.loginWithPassword(event.phoneNumber, event.password);
     if (response.statusCode == 200) {
       emit(UserAutheficated());
@@ -43,7 +44,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Future _userRegistration(_Registration event, Emitter<AuthState> emit) async {
     emit(AuthStateLoading());
 
-    final response = await _authService.registration(
+    final MyResponse response = await _authService.registration(
       event.password,
       event.phoneNumber,
       event.name,

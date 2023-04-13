@@ -41,7 +41,7 @@ class AuthService {
         loginWithTokenRoute,
         data: json.encode(params),
       );
-      if (!response.data["error"]) {
+      if (response.data["error"] == null) {
         result = true;
       } else {
         result = false;
@@ -62,17 +62,16 @@ class AuthService {
 
     var response;
     try {
-      response = _dio.post(
+      response = await _dio.post(
         loginWithPasswordRoute,
         data: json.encode(params),
       );
-
-      if (response.data["error"]) {
+      if (response.data["error"] != null) {
         result =
             MyResponse.withError(response.data["error"], response.statusCode);
       } else {
         result = MyResponse(response.data, response.statusCode);
-        if (response.data["token"]) {
+        if (response.data["token"] != null) {
           _storage.putTokenInStorage(response.data["token"]);
         }
       }
@@ -106,11 +105,11 @@ class AuthService {
         registrtionRoute,
         data: json.encode(params),
       );
-      if (response.data["error"]) {
+      if (response.data["error"] != null) {
         result = MyResponse.withError(response.data["error"], 0);
       } else {
         result = MyResponse(response.data, response.statusCode);
-        if (response.data["token"]) {
+        if (response.data["token"] != null) {
           _storage.putTokenInStorage(response.data["token"]);
         }
       }
