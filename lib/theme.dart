@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 ThemeData theme = ThemeData(
+  useMaterial3: true,
   primarySwatch: Colors.blue,
   appBarTheme: const AppBarTheme(elevation: 0, backgroundColor: Colors.white10),
   bottomAppBarTheme: const BottomAppBarTheme(elevation: 0),
@@ -22,7 +23,8 @@ ThemeData theme = ThemeData(
     headlineMedium: GoogleFonts.anonymousPro(
         color: Colors.black, fontSize: 32, fontWeight: FontWeight.bold),
   ),
-  floatingActionButtonTheme: FloatingActionButtonThemeData(
+  floatingActionButtonTheme: const FloatingActionButtonThemeData(
     elevation: 0,
+    
   ),
 );

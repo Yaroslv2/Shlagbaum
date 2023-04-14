@@ -24,7 +24,7 @@ class HomePageService {
     if (!(await _storage.isHaveToken())) {
       return MyResponse.withError("Непредвиденная ошибка", 0);
     }
-    final token = _storage.getTokenInStorage();
+    final token = await _storage.getTokenInStorage();
 
     var params = {
       "token": token,
@@ -35,10 +35,9 @@ class HomePageService {
         loadingHomePageRoute,
         data: json.encode(params),
       );
-      if (response.data["error"]) {
+      if (response.data["error"] != null) {
         result = MyResponse.withError(response.data["error"], 0);
       } else {
-        
         result = MyResponse(response.data, response.statusCode);
       }
     } catch (errorMessage) {

@@ -6,4 +6,4 @@ const loginWithPasswordRoute = "/login";
 
 const registrtionRoute = "/registr";
 
-const loadingHomePageRoute = "";
+const loadingHomePageRoute = "/get_guests";

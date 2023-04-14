@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shlagbaum/application/bloc/auth/auth_bloc.dart';
 import 'package:shlagbaum/application/bloc/home_page/home_page_bloc.dart';
 import 'package:shlagbaum/application/service/home_page_sevice.dart';
+import 'package:shlagbaum/presentation/add_guest_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -68,23 +70,35 @@ class HomePageSussess extends StatelessWidget {
       }
     }
 
-    return Scaffold(
-      body: RefreshIndicator(
-        onRefresh: () async {
-          BlocProvider.of<HomePageBloc>(context)
-              .add(HomePageEvent.lodingPage());
-        },
-        child: Padding(
+    return RefreshIndicator(
+      displacement: 250,
+      strokeWidth: 3,
+      triggerMode: RefreshIndicatorTriggerMode.onEdge,
+      onRefresh: () async {
+        BlocProvider.of<HomePageBloc>(context).add(HomePageEvent.lodingPage());
+      },
+      backgroundColor: Colors.black,
+      child: Scaffold(
+        body: Padding(
           padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
           child: listViewBuilder(),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        backgroundColor: Colors.black,
-        child: const Icon(
-          Icons.add_outlined,
-          color: Colors.white,
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: ((_) => AddNewGuest(
+                      bloc: BlocProvider.of<HomePageBloc>(context),
+                    )),
+              ),
+            );
+          },
+          backgroundColor: Colors.black,
+          child: const Icon(
+            Icons.add_outlined,
+            color: Colors.white,
+          ),
         ),
       ),
     );

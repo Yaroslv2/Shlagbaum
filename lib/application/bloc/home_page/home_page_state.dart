@@ -2,7 +2,7 @@ part of 'home_page_bloc.dart';
 
 class HomePageState extends Equatable {
   homeState? state;
-  List<CarNumber> numbers;
+  List<GuestCarNumber> numbers;
   String? errorMessage;
 
   HomePageState({
@@ -11,11 +11,11 @@ class HomePageState extends Equatable {
     this.errorMessage,
   });
 
-  factory HomePageState.initial() => HomePageState(numbers: const []);
+  factory HomePageState.initial() => HomePageState(numbers: []);
 
   HomePageState copyWith({
     homeState? state,
-    List<CarNumber>? numbers,
+    List<GuestCarNumber>? numbers,
     String? errorMessage,
   }) =>
       HomePageState(

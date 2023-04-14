@@ -1,17 +1,20 @@
-class CarNumber {
-  int role;
+class GuestCarNumber {
   String number;
-  String? deadTime;
+  int id;
+  String guestName;
+  bool oneTime;
 
-  CarNumber({
-    required this.role,
+  GuestCarNumber({
     required this.number,
-    this.deadTime,
+    required this.id,
+    required this.guestName,
+    required this.oneTime,    
   });
 
-  factory CarNumber.fromJson(Map<String, dynamic> json) => CarNumber(
-        role: json["role"],
-        number: json["number"],
-        deadTime: json["role"] == 0 ? null : json["deadTime"],
+  factory GuestCarNumber.fromJson(Map<String, dynamic> json) => GuestCarNumber(
+        id: json["guest_id"],
+        number: json["car_num"],
+        guestName: json["guest_name"],
+        oneTime: json["one_time_vizit"],
       );
 }
