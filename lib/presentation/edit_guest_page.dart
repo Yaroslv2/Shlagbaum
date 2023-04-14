@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shlagbaum/application/bloc/add_guest/add_guest_cubit.dart';
+import 'package:shlagbaum/application/bloc/edit_guest/edit_guest_cubit.dart';
 import 'package:shlagbaum/application/bloc/home_page/home_page_bloc.dart';
-import 'package:shlagbaum/application/service/server_info.dart';
+import 'package:shlagbaum/models/car_number.dart';
+import 'package:shlagbaum/presentation/add_guest_page.dart';
 
-class AddNewGuest extends StatelessWidget {
+class EditGuestPage extends StatelessWidget {
+  int index;
+  GuestCarNumber guest;
   final bloc;
-  const AddNewGuest({super.key, required this.bloc});
+  EditGuestPage(
+      {super.key,
+      required this.index,
+      required this.guest,
+      required this.bloc});
 
   @override
   Widget build(BuildContext context) {
@@ -21,36 +28,37 @@ class AddNewGuest extends StatelessWidget {
             color: Colors.black,
           ),
         ),
-        title: Text(
-          "Добавление гостя",
-          style: Theme.of(context)
-              .textTheme
-              .headlineMedium!
-              .copyWith(fontSize: 24),
-        ),
-        centerTitle: true,
       ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-        child: Center(child: GuestForm(bloc: bloc)),
+      body: BlocProvider(
+        create: (context) => EditGuestCubit(),
+        child: Center(child: EditForm(guest: guest, bloc: bloc)),
       ),
     );
   }
 }
 
-class GuestForm extends StatefulWidget {
+class EditForm extends StatefulWidget {
+  GuestCarNumber guest;
   final bloc;
-  const GuestForm({super.key, required this.bloc});
+  EditForm({super.key, required this.guest, required this.bloc});
 
   @override
-  State<GuestForm> createState() => _GuestFormState();
+  State<EditForm> createState() => _EditFormState();
 }
 
-class _GuestFormState extends State<GuestForm> {
+class _EditFormState extends State<EditForm> {
+  final keyForm = GlobalKey<FormState>();
   final nameController = TextEditingController();
   final carNumberController = TextEditingController();
-  var oneVizit = true;
-  final keyForm = GlobalKey<FormState>();
+  var oneVizit;
+
+  @override
+  initState() {
+    super.initState();
+    nameController.text = widget.guest.guestName;
+    carNumberController.text = widget.guest.number;
+    oneVizit = widget.guest.oneTime;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -140,14 +148,14 @@ class _GuestFormState extends State<GuestForm> {
               padding: EdgeInsets.symmetric(vertical: 30),
             ),
             BlocProvider(
-              create: (context) => AddGuestCubit(),
-              child: BlocListener<AddGuestCubit, AddGuestState>(
+              create: (context) => EditGuestCubit(),
+              child: BlocListener<EditGuestCubit, EditGuestState>(
                 listener: (context, state) {
-                  if (state is AddGuestSuccess) {
+                  if (state is EditGuestSuccess) {
                     Navigator.pop(context);
                     widget.bloc.add(HomePageEvent.lodingPage());
                   }
-                  if (state is AddGuestFailure) {
+                  if (state is EditGuestFailure) {
                     SnackBar snackbar = SnackBar(
                       content: Text(state.errorMessage),
                       backgroundColor: Colors.red[200],
@@ -157,9 +165,9 @@ class _GuestFormState extends State<GuestForm> {
                 },
                 child: SizedBox(
                   width: double.infinity,
-                  child: BlocBuilder<AddGuestCubit, AddGuestState>(
+                  child: BlocBuilder<EditGuestCubit, EditGuestState>(
                     builder: (context, state) {
-                      if (state is AddGuestLoading) {
+                      if (state is EditGuestLoading) {
                         return ElevatedButton(
                           onPressed: () {},
                           style: ElevatedButton.styleFrom(
@@ -179,7 +187,8 @@ class _GuestFormState extends State<GuestForm> {
                       return ElevatedButton(
                         onPressed: () {
                           if (keyForm.currentState!.validate()) {
-                            BlocProvider.of<AddGuestCubit>(context).add(
+                            BlocProvider.of<EditGuestCubit>(context).edit(
+                              widget.guest.id,
                               nameController.text,
                               carNumberController.text,
                               oneVizit,
@@ -189,7 +198,7 @@ class _GuestFormState extends State<GuestForm> {
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.black),
                         child: Text(
-                          "Добавить",
+                          "Изменить",
                           style: Theme.of(context)
                               .textTheme
                               .bodyMedium!

@@ -4,6 +4,7 @@ import 'package:shlagbaum/application/bloc/auth/auth_bloc.dart';
 import 'package:shlagbaum/application/bloc/home_page/home_page_bloc.dart';
 import 'package:shlagbaum/application/service/home_page_sevice.dart';
 import 'package:shlagbaum/presentation/add_guest_page.dart';
+import 'package:shlagbaum/presentation/edit_guest_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -16,21 +17,46 @@ class HomePage extends StatelessWidget {
         create: (context) => HomePageBloc(
           RepositoryProvider.of<HomePageService>(context),
         )..add(HomePageEvent.lodingPage()),
-        child: BlocBuilder<HomePageBloc, HomePageState>(
-          builder: (context, state) {
-            if (state.state == homeState.sussess) {
-              return const HomePageSussess();
+        child: BlocListener<HomePageBloc, HomePageState>(
+          listener: (context, state) {
+            if (state.state == homeState.errorMessage) {
+              SnackBar snackBar;
+              if (state.errorMessage != null) {
+                snackBar = SnackBar(
+                  content: Text(state.errorMessage!),
+                  backgroundColor: Colors.red,
+                );
+              } else {
+                snackBar = const SnackBar(
+                  content: Text("Непредвиденная ошибка, попробуйте позже"),
+                  backgroundColor: Colors.red,
+                );
+              }
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
             }
-            if (state.state == homeState.error) {
-              return const HomePageError();
-            }
-
-            return const Scaffold(
-              body: Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
           },
+          child: BlocBuilder<HomePageBloc, HomePageState>(
+            builder: (context, state) {
+              if (state.needRefresh == true) {
+                state.needRefresh = false;
+                return HomePageSussess();
+              }
+              if (state.state == homeState.sussess) {
+                return const HomePageSussess();
+              }
+              if (state.state == homeState.error) {
+                return const HomePageError();
+              }
+
+              return const Scaffold(
+                body: Center(
+                  child: CircularProgressIndicator(
+                    color: Colors.black,
+                  ),
+                ),
+              );
+            },
+          ),
         ),
       ),
     );
@@ -44,44 +70,28 @@ class HomePageSussess extends StatelessWidget {
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<HomePageBloc>(context);
 
-    Widget listViewBuilder() {
-      if (bloc.state.numbers.isEmpty) {
-        return const Center(
-          child: Text("Тут пусто..."),
-        );
-      } else {
-        return ListView.builder(
-          itemCount: bloc.state.numbers.length,
-          itemBuilder: (context, index) {
-            return SizedBox(
-              height: 50,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    bloc.state.numbers[index].number,
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                ],
-              ),
-            );
-          },
-        );
-      }
-    }
-
     return RefreshIndicator(
-      displacement: 250,
-      strokeWidth: 3,
+      displacement: 50,
+      strokeWidth: 2,
       triggerMode: RefreshIndicatorTriggerMode.onEdge,
       onRefresh: () async {
         BlocProvider.of<HomePageBloc>(context).add(HomePageEvent.lodingPage());
       },
       backgroundColor: Colors.black,
       child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            "Гостевые номера",
+            style: Theme.of(context)
+                .textTheme
+                .headlineMedium!
+                .copyWith(fontSize: 24),
+          ),
+          centerTitle: true,
+        ),
         body: Padding(
           padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-          child: listViewBuilder(),
+          child: ListViewBuild(),
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
@@ -105,6 +115,75 @@ class HomePageSussess extends StatelessWidget {
   }
 }
 
+class ListViewBuild extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final bloc = BlocProvider.of<HomePageBloc>(context);
+    if (bloc.state.numbers.isEmpty) {
+      return Center(
+        child: Text("Тут пусто..."),
+      );
+    } else {
+      return ListView.separated(
+        itemCount: bloc.state.numbers.length,
+        separatorBuilder: (context, index) => const Divider(),
+        itemBuilder: (context, index) {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width / 2,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      bloc.state.numbers[index].guestName,
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium!
+                          .copyWith(fontSize: 18),
+                    ),
+                    Text(
+                      bloc.state.numbers[index].number,
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                    Text(
+                      bloc.state.numbers[index].oneTime
+                          ? "Одноразовый"
+                          : "Постоянный",
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ],
+                ),
+              ),
+              IconButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => EditGuestPage(
+                          index: index,
+                          guest: bloc.state.numbers[index],
+                          bloc: BlocProvider.of<HomePageBloc>(context),
+                        ),
+                      ));
+                },
+                icon: Icon(Icons.edit),
+              ),
+              IconButton(
+                  onPressed: () {
+                    BlocProvider.of<HomePageBloc>(context)
+                        .add(HomePageEvent.deleteGuest(guestIndex: index));
+                  },
+                  icon: Icon(Icons.delete_forever_outlined)),
+            ],
+          );
+        },
+      );
+    }
+  }
+}
+
 class HomePageError extends StatelessWidget {
   const HomePageError({super.key});
 
@@ -113,6 +192,9 @@ class HomePageError extends StatelessWidget {
     final bloc = BlocProvider.of<HomePageBloc>(context);
     return Scaffold(
       body: RefreshIndicator(
+        displacement: 50,
+        strokeWidth: 2,
+        triggerMode: RefreshIndicatorTriggerMode.onEdge,
         onRefresh: () async {
           bloc.add(HomePageEvent.lodingPage());
         },

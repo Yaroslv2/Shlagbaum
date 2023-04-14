@@ -13,6 +13,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       : _service = service,
         super(HomePageState.initial()) {
     on<_LoadingPageEvent>(_loadingPage);
+    on<_DeleteGuestEvent>(_deleteGuest);
   }
 
   Future _loadingPage(
@@ -34,6 +35,26 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     } else {
       emit(state.copyWith(
         state: homeState.error,
+        errorMessage: response.errorMessage,
+      ));
+    }
+  }
+
+  Future _deleteGuest(
+      _DeleteGuestEvent event, Emitter<HomePageState> emit) async {
+    var response = await _service.deleteGuest(state.numbers[event.guestIndex]);
+
+    if (response.statusCode == 200) {
+      var list = state.numbers;
+      list.removeAt(event.guestIndex);
+      emit(state.copyWith(
+        state: homeState.sussess,
+        numbers: list,
+        needRefresh: true,
+      ));
+    } else {
+      emit(state.copyWith(
+        state: homeState.errorMessage,
         errorMessage: response.errorMessage,
       ));
     }

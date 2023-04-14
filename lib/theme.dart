@@ -25,6 +25,5 @@ ThemeData theme = ThemeData(
   ),
   floatingActionButtonTheme: const FloatingActionButtonThemeData(
     elevation: 0,
-    
   ),
 );
