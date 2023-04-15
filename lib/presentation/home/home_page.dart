@@ -1,10 +1,10 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shlagbaum/application/bloc/auth/auth_bloc.dart';
 import 'package:shlagbaum/application/bloc/home_page/home_page_bloc.dart';
 import 'package:shlagbaum/application/service/home_page_sevice.dart';
-import 'package:shlagbaum/presentation/add_guest_page.dart';
-import 'package:shlagbaum/presentation/edit_guest_page.dart';
+import 'package:shlagbaum/presentation/home/add_guest_page.dart';
+import 'package:shlagbaum/presentation/home/edit_guest_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -70,45 +70,43 @@ class HomePageSussess extends StatelessWidget {
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<HomePageBloc>(context);
 
-    return RefreshIndicator(
-      displacement: 50,
-      strokeWidth: 2,
-      triggerMode: RefreshIndicatorTriggerMode.onEdge,
-      onRefresh: () async {
-        BlocProvider.of<HomePageBloc>(context).add(HomePageEvent.lodingPage());
-      },
-      backgroundColor: Colors.black,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            "Гостевые номера",
-            style: Theme.of(context)
-                .textTheme
-                .headlineMedium!
-                .copyWith(fontSize: 24),
-          ),
-          centerTitle: true,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Гостевые номера",
+          style: Theme.of(context)
+              .textTheme
+              .headlineMedium!
+              .copyWith(fontSize: 24),
         ),
-        body: Padding(
+        centerTitle: true,
+      ),
+      body: RefreshIndicator(
+        color: Colors.white,
+        backgroundColor: Colors.black,
+        onRefresh: () async {
+          bloc.add(HomePageEvent.lodingPage());
+        },
+        child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
           child: ListViewBuild(),
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: ((_) => AddNewGuest(
-                      bloc: BlocProvider.of<HomePageBloc>(context),
-                    )),
-              ),
-            );
-          },
-          backgroundColor: Colors.black,
-          child: const Icon(
-            Icons.add_outlined,
-            color: Colors.white,
-          ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: ((_) => AddNewGuest(
+                    bloc: BlocProvider.of<HomePageBloc>(context),
+                  )),
+            ),
+          );
+        },
+        backgroundColor: Colors.black,
+        child: const Icon(
+          Icons.add_outlined,
+          color: Colors.white,
         ),
       ),
     );
@@ -120,8 +118,13 @@ class ListViewBuild extends StatelessWidget {
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<HomePageBloc>(context);
     if (bloc.state.numbers.isEmpty) {
-      return Center(
-        child: Text("Тут пусто..."),
+      return ListView(
+        children: [
+          Padding(
+              padding: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height * 0.4)),
+          Center(child: Text("Тут пусто...")),
+        ],
       );
     } else {
       return ListView.separated(

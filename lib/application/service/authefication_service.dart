@@ -67,12 +67,13 @@ class AuthService {
         data: json.encode(params),
       );
       if (response.data["error"] != null) {
-        result =
-            MyResponse.withError(response.data["error"], response.statusCode);
+        result = MyResponse.withError(response.data["error"], 0);
       } else {
         result = MyResponse(response.data, response.statusCode);
         if (response.data["token"] != null) {
           _storage.putTokenInStorage(response.data["token"]);
+        } else {
+          result = MyResponse.withError("Что-то пошло не так...", 0);
         }
       }
     } catch (errorMessage) {

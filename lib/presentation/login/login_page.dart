@@ -29,55 +29,61 @@ class LoginPage extends StatelessWidget {
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+          child: ListView(
             children: [
-              Flexible(
-                flex: 7,
+              Padding(
+                padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height * 0.15),
+              ),
+              Center(
                 child: Text(
                   "Вход",
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
               ),
-              const Flexible(
-                flex: 3,
-                child: _LoginForm(),
+              Padding(
+                padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height * 0.1),
               ),
-              Flexible(
-                flex: 2,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    SizedBox(
-                      height: 40,
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          if (formGlobalKey.currentState!.validate()) {
-                            BlocProvider.of<AuthBloc>(context).add(
-                              AuthEvent.login(
-                                phoneNumber: phoneNumberController.text,
-                                password: passwordController.text,
-                              ),
-                            );
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.black,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        child: Text(
-                          "Войти",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium
-                              ?.copyWith(color: Colors.white),
+              _LoginForm(),
+              Padding(
+                padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height * 0.05),
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  SizedBox(
+                    height: 40,
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (formGlobalKey.currentState!.validate()) {
+                          BlocProvider.of<AuthBloc>(context).add(
+                            AuthEvent.login(
+                              phoneNumber: phoneNumberController.text,
+                              password: passwordController.text,
+                            ),
+                          );
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.black,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
                         ),
                       ),
+                      child: Text(
+                        "Войти",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium
+                            ?.copyWith(color: Colors.white),
+                      ),
                     ),
-                    TextButton(
+                  ),
+                  Center(
+                    child: TextButton(
                       onPressed: () {
                         BlocProvider.of<LoginPageCubit>(context)
                             .GoToRegistrationPage();
@@ -87,8 +93,8 @@ class LoginPage extends StatelessWidget {
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -115,10 +121,10 @@ class __LoginFormState extends State<_LoginForm> {
         children: [
           TextFormField(
             controller: phoneNumberController,
-            keyboardType: TextInputType.phone,
-            inputFormatters: [
-              FilteringTextInputFormatter.digitsOnly,
-            ],
+            //keyboardType: TextInputType.phone,
+            // inputFormatters: [
+            //   FilteringTextInputFormatter.digitsOnly,
+            // ],
             decoration: InputDecoration(
               label: Text(
                 "Телефон",
@@ -145,8 +151,12 @@ class __LoginFormState extends State<_LoginForm> {
             },
             cursorColor: Colors.black,
           ),
+          Padding(
+            padding: EdgeInsets.only(top: 20),
+          ),
           TextFormField(
             controller: passwordController,
+            obscureText: true,
             decoration: InputDecoration(
               label: Text(
                 "Пароль",

@@ -13,3 +13,9 @@ const addNewGuestRoute = "/add_guest";
 const deleteGuestRoute = "/del_guest";
 
 const editGuestRoute = "/change_guest";
+
+const deleteAccountRoute = "/del_user";
+
+const changeUserInfoRoute = "/change_user";
+
+const changePasswordRoute = "/change_password";

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shlagbaum/application/bloc/edit_guest/edit_guest_cubit.dart';
 import 'package:shlagbaum/application/bloc/home_page/home_page_bloc.dart';
 import 'package:shlagbaum/models/car_number.dart';
-import 'package:shlagbaum/presentation/add_guest_page.dart';
+import 'package:shlagbaum/presentation/home/add_guest_page.dart';
 
 class EditGuestPage extends StatelessWidget {
   int index;
@@ -29,9 +29,12 @@ class EditGuestPage extends StatelessWidget {
           ),
         ),
       ),
-      body: BlocProvider(
-        create: (context) => EditGuestCubit(),
-        child: Center(child: EditForm(guest: guest, bloc: bloc)),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+        child: BlocProvider(
+          create: (context) => EditGuestCubit(),
+          child: Center(child: EditForm(guest: guest, bloc: bloc)),
+        ),
       ),
     );
   }

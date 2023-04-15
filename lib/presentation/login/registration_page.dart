@@ -38,74 +38,66 @@ class RegistrationPage extends StatelessWidget {
             vertical: 20,
             horizontal: 15,
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+          child: ListView(
             children: [
-              Flexible(
-                flex: 1,
+              Center(
                 child: Text(
                   "Регистрация",
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
               ),
-              const Flexible(
-                flex: 4,
-                child: _RegistrationForm(),
-              ),
-              Flexible(
-                flex: 1,
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 40,
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          if (registrationControllers.key.currentState!
-                              .validate()) {
-                            BlocProvider.of<AuthBloc>(context).add(
-                              AuthEvent.registration(
-                                name:
-                                    registrationControllers.nameController.text,
-                                lastname: registrationControllers
-                                    .lastnameController.text,
-                                phoneNumber: registrationControllers
-                                    .phoneNumberController.text,
-                                password: registrationControllers
-                                    .passwordController.text,
-                                carNumber: registrationControllers
-                                    .carNumberController.text,
-                              ),
-                            );
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.black,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        child: Text(
-                          "Зарегистрироваться",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium!
-                              .copyWith(color: Colors.white),
-                        ),
-                      ),
-                    ),
-                    TextButton(
+              Padding(padding: EdgeInsets.only(top: 30)),
+              _RegistrationForm(),
+              Padding(padding: EdgeInsets.only(top: 70)),
+              Column(
+                children: [
+                  SizedBox(
+                    height: 40,
+                    width: double.infinity,
+                    child: ElevatedButton(
                       onPressed: () {
-                        BlocProvider.of<LoginPageCubit>(context)
-                            .GoToLoginPage();
+                        if (registrationControllers.key.currentState!
+                            .validate()) {
+                          BlocProvider.of<AuthBloc>(context).add(
+                            AuthEvent.registration(
+                              name: registrationControllers.nameController.text,
+                              lastname: registrationControllers
+                                  .lastnameController.text,
+                              phoneNumber: registrationControllers
+                                  .phoneNumberController.text,
+                              password: registrationControllers
+                                  .passwordController.text,
+                              carNumber: registrationControllers
+                                  .carNumberController.text,
+                            ),
+                          );
+                        }
                       },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.black,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
                       child: Text(
-                        "Уже есть аккаунт?",
-                        style: Theme.of(context).textTheme.bodySmall,
+                        "Зарегистрироваться",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium!
+                            .copyWith(color: Colors.white),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      BlocProvider.of<LoginPageCubit>(context).GoToLoginPage();
+                    },
+                    child: Text(
+                      "Уже есть аккаунт?",
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -158,6 +150,9 @@ class __RegistrationFormState extends State<_RegistrationForm> {
               return null;
             },
           ),
+          Padding(
+            padding: EdgeInsets.only(top: 20),
+          ),
           TextFormField(
             controller: registrationControllers.nameController,
             cursorColor: Colors.black,
@@ -185,6 +180,9 @@ class __RegistrationFormState extends State<_RegistrationForm> {
               }
               return null;
             },
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 20),
           ),
           TextFormField(
             controller: registrationControllers.lastnameController,
@@ -214,6 +212,9 @@ class __RegistrationFormState extends State<_RegistrationForm> {
               return null;
             },
           ),
+          Padding(
+            padding: EdgeInsets.only(top: 20),
+          ),
           TextFormField(
             controller: registrationControllers.carNumberController,
             cursorColor: Colors.black,
@@ -242,9 +243,13 @@ class __RegistrationFormState extends State<_RegistrationForm> {
               return null;
             },
           ),
+          Padding(
+            padding: EdgeInsets.only(top: 20),
+          ),
           TextFormField(
             controller: registrationControllers.passwordController,
             cursorColor: Colors.black,
+            obscureText: true,
             decoration: InputDecoration(
               label: Text(
                 "Пароль",
