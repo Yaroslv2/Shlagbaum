@@ -25,30 +25,20 @@ class ChangeUserInfoCubit extends Cubit<ChangeUserInfoState> {
   );
   ChangeUserInfoCubit() : super(ChangeUserInfoWaitingUser());
 
-  Future changes(
-    String phone,
-    String name,
-    String lastname,
-    String carNumber,
-  ) async {
+  Future changes(String phone) async {
     emit(ChangeUserInfoLoading());
 
     var token = await _storage.getTokenInStorage();
 
     var params = {
       "token": token,
-      "changes": {
-        "name": name,
-        "lastname": lastname,
-        "phone": phone,
-        "car_num": carNumber,
-      },
+      "phone": phone,
     };
 
     var response;
     try {
       response = await _dio.post(
-        changeUserInfoRoute,
+        changeUserPhoneRoute,
         data: json.encode(params),
       );
       if (response.data["error"] == null) {

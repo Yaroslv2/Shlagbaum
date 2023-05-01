@@ -13,7 +13,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         super(AuthState.initial()) {
     on<_LoadingApp>(_appLoading);
     on<_Login>(_userLogin);
-    on<_Registration>(_userRegistration);
     on<_Logout>(_userLogout);
   }
 
@@ -30,33 +29,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future _userLogin(_Login event, Emitter<AuthState> emit) async {
-    emit(AuthStateLoading());
-
-    final MyResponse response =
-        await _authService.loginWithPassword(event.phoneNumber, event.password);
-    if (response.statusCode == 200) {
-      emit(UserAutheficated());
-    } else {
-      emit(AuthFailure(message: response.errorMessage));
-    }
-  }
-
-  Future _userRegistration(_Registration event, Emitter<AuthState> emit) async {
-    emit(AuthStateLoading());
-
-    final MyResponse response = await _authService.registration(
-      event.password,
-      event.phoneNumber,
-      event.name,
-      event.lastname,
-      event.carNumber,
-    );
-
-    if (response.statusCode == 200) {
-      emit(UserAutheficated());
-    } else {
-      emit(AuthFailure(message: response.errorMessage));
-    }
+    emit(UserAutheficated());
   }
 
   Future _userLogout(_Logout event, Emitter<AuthState> emit) async {

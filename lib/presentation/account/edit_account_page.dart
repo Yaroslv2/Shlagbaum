@@ -13,7 +13,7 @@ class EditAccountInfoPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Изменить информацию",
+          "Изменить номер",
           style: Theme.of(context)
               .textTheme
               .headlineMedium!
@@ -41,17 +41,11 @@ class EditAccountInfoForm extends StatefulWidget {
 class _EditAccountInfoFormState extends State<EditAccountInfoForm> {
   final _key = GlobalKey<FormState>();
   final _phoneController = TextEditingController();
-  final _nameController = TextEditingController();
-  final _lastnameController = TextEditingController();
-  final _carNumberController = TextEditingController();
 
   @override
   initState() {
     super.initState();
     _phoneController.text = widget.bloc.state.phone;
-    _nameController.text = widget.bloc.state.name;
-    _lastnameController.text = widget.bloc.state.lastname;
-    _carNumberController.text = widget.bloc.state.carNumber;
   }
 
   @override
@@ -61,7 +55,8 @@ class _EditAccountInfoFormState extends State<EditAccountInfoForm> {
       child: ListView(
         children: [
           Padding(
-            padding: EdgeInsets.only(top: 100),
+            padding:
+                EdgeInsets.only(top: MediaQuery.of(context).size.height / 3),
           ),
           TextFormField(
             controller: _phoneController,
@@ -73,93 +68,6 @@ class _EditAccountInfoFormState extends State<EditAccountInfoForm> {
               ),
               prefixIcon: const Icon(
                 Icons.phone,
-                color: Colors.black,
-              ),
-              border: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.grey),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.black),
-                borderRadius: BorderRadius.circular(10),
-              ),
-            ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return "Пожалуйста, заполните это поле";
-              }
-              return null;
-            },
-          ),
-          Padding(padding: EdgeInsets.symmetric(vertical: 10)),
-          TextFormField(
-            controller: _nameController,
-            cursorColor: Colors.black,
-            decoration: InputDecoration(
-              label: Text(
-                "Имя",
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-              prefixIcon: const Icon(
-                Icons.account_circle_outlined,
-                color: Colors.black,
-              ),
-              border: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.grey),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.black),
-                borderRadius: BorderRadius.circular(10),
-              ),
-            ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return "Пожалуйста, заполните это поле";
-              }
-              return null;
-            },
-          ),
-          Padding(padding: EdgeInsets.symmetric(vertical: 10)),
-          TextFormField(
-            controller: _lastnameController,
-            cursorColor: Colors.black,
-            decoration: InputDecoration(
-              label: Text(
-                "Фамилия",
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-              prefixIcon: const Icon(
-                Icons.account_circle_outlined,
-                color: Colors.black,
-              ),
-              border: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.grey),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.black),
-                borderRadius: BorderRadius.circular(10),
-              ),
-            ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return "Пожалуйста, заполните это поле";
-              }
-              return null;
-            },
-          ),
-          Padding(padding: EdgeInsets.symmetric(vertical: 10)),
-          TextFormField(
-            controller: _carNumberController,
-            cursorColor: Colors.black,
-            decoration: InputDecoration(
-              label: Text(
-                "Номер машины",
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-              prefixIcon: const Icon(
-                Icons.directions_car_sharp,
                 color: Colors.black,
               ),
               border: OutlineInputBorder(
@@ -221,9 +129,6 @@ class _EditAccountInfoFormState extends State<EditAccountInfoForm> {
                         if (_key.currentState!.validate()) {
                           BlocProvider.of<ChangeUserInfoCubit>(context).changes(
                             _phoneController.text,
-                            _nameController.text,
-                            _lastnameController.text,
-                            _carNumberController.text,
                           );
                         }
                       },

@@ -51,6 +51,9 @@ class _GuestFormState extends State<GuestForm> {
   final carNumberController = TextEditingController();
   var oneVizit = true;
   final keyForm = GlobalKey<FormState>();
+  String _dropDownValue = "легковой";
+
+  List<String> _dropItems = ["Легковой", "Грузовой"];
 
   @override
   Widget build(BuildContext context) {
@@ -119,6 +122,38 @@ class _GuestFormState extends State<GuestForm> {
             },
           ),
           Padding(padding: EdgeInsets.symmetric(vertical: 10)),
+          Text(
+            "Тип автомобиля",
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+          DropdownButton(
+            hint: _dropDownValue == null
+                ? Text(
+                    _dropItems[0],
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  )
+                : Text(
+                    _dropDownValue!,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+            items: _dropItems
+                .map((val) => DropdownMenuItem(
+                    value: val,
+                    child: Text(
+                      val,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    )))
+                .toList(),
+            isExpanded: true,
+            iconSize: 30,
+            elevation: 0,
+            onChanged: (val) {
+              setState(() {
+                _dropDownValue = val!;
+              });
+            },
+          ),
+          Padding(padding: EdgeInsets.symmetric(vertical: 10)),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -184,6 +219,7 @@ class _GuestFormState extends State<GuestForm> {
                             nameController.text,
                             carNumberController.text,
                             oneVizit,
+                            _dropDownValue,
                           );
                         }
                       },

@@ -22,7 +22,12 @@ class AddGuestCubit extends Cubit<AddGuestState> {
   Storage _storage = Storage();
   AddGuestCubit() : super(AddGuestWaitingUser());
 
-  Future add(String guestName, String carNumber, bool oneTime) async {
+  Future add(
+    String guestName,
+    String carNumber,
+    bool oneTime,
+    String carType,
+  ) async {
     emit(AddGuestLoading());
     final token = await _storage.getTokenInStorage();
     var params = {
@@ -30,6 +35,7 @@ class AddGuestCubit extends Cubit<AddGuestState> {
       "guest_name": guestName,
       "car_num": carNumber,
       "one_time_visit": oneTime,
+      "car_type": carType,
     };
 
     var response;
@@ -44,8 +50,8 @@ class AddGuestCubit extends Cubit<AddGuestState> {
         emit(AddGuestSuccess());
       }
     } catch (e) {
-      emit(const AddGuestFailure(
-          errorMessage: "Ошибка при подключении к серверу. Попробуйте позже"));
+      print(response);
+      emit(AddGuestFailure(errorMessage: "${e}"));
     }
   }
 }

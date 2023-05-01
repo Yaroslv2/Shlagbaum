@@ -26,6 +26,7 @@ class AuthService {
       return false;
     } else {
       token = await _storage.getTokenInStorage();
+      print(token);
       if (Jwt.isExpired(token)) {
         return false;
       }
@@ -49,75 +50,6 @@ class AuthService {
     } catch (errorMessage) {
       result = false;
     }
-    return result;
-  }
-
-  Future<MyResponse> loginWithPassword(String phone, String password) async {
-    MyResponse result;
-
-    var params = {
-      "password": password,
-      "phone": phone,
-    };
-
-    var response;
-    try {
-      response = await _dio.post(
-        loginWithPasswordRoute,
-        data: json.encode(params),
-      );
-      if (response.data["error"] != null) {
-        result = MyResponse.withError(response.data["error"], 0);
-      } else {
-        result = MyResponse(response.data, response.statusCode);
-        if (response.data["token"] != null) {
-          _storage.putTokenInStorage(response.data["token"]);
-        } else {
-          result = MyResponse.withError("Что-то пошло не так...", 0);
-        }
-      }
-    } catch (errorMessage) {
-      result = MyResponse.withError("$errorMessage", response.statusCode);
-    }
-
-    return result;
-  }
-
-  Future<MyResponse> registration(
-    String password,
-    String phone,
-    String name,
-    String lastname,
-    String carNumber,
-  ) async {
-    MyResponse result;
-
-    var params = {
-      "password": password,
-      "phone": phone,
-      "name": name,
-      "lastname": lastname,
-      "car_num": carNumber,
-    };
-
-    var response;
-    try {
-      response = await _dio.post(
-        registrtionRoute,
-        data: json.encode(params),
-      );
-      if (response.data["error"] != null) {
-        result = MyResponse.withError(response.data["error"], 0);
-      } else {
-        result = MyResponse(response.data, response.statusCode);
-        if (response.data["token"] != null) {
-          _storage.putTokenInStorage(response.data["token"]);
-        }
-      }
-    } catch (errorMessage) {
-      result = MyResponse.withError("$errorMessage", response.statusCode);
-    }
-
     return result;
   }
 

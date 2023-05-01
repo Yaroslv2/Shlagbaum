@@ -112,6 +112,11 @@ class AccountPageSuccess extends StatelessWidget {
               "Номер машины: ${bloc.state.carNumber}",
               style: Theme.of(context).textTheme.bodyMedium,
             ),
+            Text("Тип машины: ${bloc.state.carType}"),
+            Text(
+              "Участок: ${bloc.state.pole}",
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 2.5),
             ),
@@ -133,14 +138,14 @@ class AccountPageSuccess extends StatelessWidget {
                 child: Row(
                   children: [
                     Icon(
-                      Icons.edit,
+                      Icons.phone,
                       color: Colors.black,
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 5),
                     ),
                     Text(
-                      "Изменить информацию",
+                      "Изменить номер телефона",
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                   ],
@@ -267,7 +272,7 @@ Future<void> BuildDialog(context, bloc) {
             Theme.of(context).textTheme.headlineMedium!.copyWith(fontSize: 20),
       ),
       content: Text(
-        "Вы уверены? Удаление приведет к удалению всех данных, восстановление аккаунта не будет возможным.",
+        "Вы уверены? Это приведет к удалению всех данных, восстановление аккаунта будет невозможным.",
         style: Theme.of(context).textTheme.bodyMedium,
       ),
       actions: [

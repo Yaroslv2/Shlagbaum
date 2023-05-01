@@ -152,7 +152,7 @@ class _ChangePasswordFormState extends State<ChangePasswordForm> {
                           BlocProvider.of<ChangePasswordCubit>(context)
                               .updatePassword(
                             _oldPasswordController.text,
-                            _oldPasswordController.text,
+                            _newPasswordController.text,
                           );
                         }
                       },

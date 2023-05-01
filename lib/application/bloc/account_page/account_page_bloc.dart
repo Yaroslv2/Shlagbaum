@@ -32,6 +32,8 @@ class AccountPageBloc extends Bloc<AccountPageEvent, AccountPageState> {
         name: token["name"],
         lastname: token["last_name"],
         carNumber: token["car_num"],
+        carType: token["car_type"],
+        pole: token["place"],
       ));
     } else {
       emit(state.copyWith(

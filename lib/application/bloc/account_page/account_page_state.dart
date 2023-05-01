@@ -6,6 +6,8 @@ class AccountPageState extends Equatable {
   String? name;
   String? lastname;
   String? carNumber;
+  String? carType;
+  int? pole;
   bool? needRefresh;
   String? errorMessage;
 
@@ -15,6 +17,8 @@ class AccountPageState extends Equatable {
     this.name,
     this.lastname,
     this.carNumber,
+    this.pole,
+    this.carType,
     this.needRefresh,
     this.errorMessage,
   });
@@ -28,6 +32,8 @@ class AccountPageState extends Equatable {
     String? name,
     String? lastname,
     String? carNumber,
+    String? carType,
+    int? pole,
     bool? needRefresh,
     String? errorMessage,
   }) =>
@@ -37,6 +43,8 @@ class AccountPageState extends Equatable {
         name: name ?? this.name,
         lastname: lastname ?? this.lastname,
         carNumber: carNumber ?? this.carNumber,
+        carType: carType ?? this.carType,
+        pole: pole ?? this.pole,
         needRefresh: needRefresh ?? this.needRefresh,
         errorMessage: errorMessage ?? this.errorMessage,
       );
@@ -48,6 +56,8 @@ class AccountPageState extends Equatable {
         name,
         lastname,
         carNumber,
+        carType,
+        pole,
         needRefresh,
       ];
 }

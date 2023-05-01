@@ -4,8 +4,6 @@ const loginWithTokenRoute = "/check_user";
 
 const loginWithPasswordRoute = "/login";
 
-const registrtionRoute = "/registr";
-
 const loadingHomePageRoute = "/get_guests";
 
 const addNewGuestRoute = "/add_guest";
@@ -16,6 +14,6 @@ const editGuestRoute = "/change_guest";
 
 const deleteAccountRoute = "/del_user";
 
-const changeUserInfoRoute = "/change_user";
+const changeUserPhoneRoute = "/change_phone";
 
 const changePasswordRoute = "/change_password";

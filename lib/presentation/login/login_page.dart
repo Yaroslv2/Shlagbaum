@@ -2,102 +2,126 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shlagbaum/application/bloc/auth/auth_bloc.dart';
-import 'package:shlagbaum/application/bloc/login_page/login_page_cubit.dart';
+import 'package:shlagbaum/application/bloc/cubit/login_page_cubit.dart';
 
 final phoneNumberController = TextEditingController();
 final formGlobalKey = GlobalKey<FormState>();
 final passwordController = TextEditingController();
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+  final bloc;
+  LoginPage({super.key, required this.bloc});
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          leading: IconButton(
-            onPressed: () {
-              BlocProvider.of<LoginPageCubit>(context).GoBack();
-            },
-            icon: const Icon(
-              Icons.arrow_back_ios_new,
-              color: Colors.black,
-            ),
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(
+            Icons.arrow_back_ios_new, 
+            color: Colors.black,
           ),
         ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-          child: ListView(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height * 0.15),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+        child: ListView(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height * 0.15),
+            ),
+            Center(
+              child: Text(
+                "Вход",
+                style: Theme.of(context).textTheme.headlineMedium,
               ),
-              Center(
-                child: Text(
-                  "Вход",
-                  style: Theme.of(context).textTheme.headlineMedium,
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height * 0.1),
-              ),
-              _LoginForm(),
-              Padding(
-                padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height * 0.05),
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  SizedBox(
-                    height: 40,
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        if (formGlobalKey.currentState!.validate()) {
-                          BlocProvider.of<AuthBloc>(context).add(
-                            AuthEvent.login(
-                              phoneNumber: phoneNumberController.text,
-                              password: passwordController.text,
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height * 0.1),
+            ),
+            _LoginForm(),
+            Padding(
+              padding: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height * 0.05),
+            ),
+            BlocProvider(
+              create: (context) => LoginPageCubit(),
+              child: BlocListener<LoginPageCubit, LoginPageState>(
+                listener: (context, state) {
+                  if (state is LoginPageSuccess) {
+                    Navigator.pop(context);
+                    bloc.add(AuthEvent.login());
+                  }
+                  if (state is LoginPageFailure) {
+                    SnackBar snackbar = SnackBar(
+                      content: Text(state.errorMessage),
+                      backgroundColor: Color.fromARGB(255, 221, 63, 63),
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackbar);
+                  }
+                },
+                child: BlocBuilder<LoginPageCubit, LoginPageState>(
+                  builder: (context, state) {
+                    if (state is LoginPageLoading) {
+                      return SizedBox(
+                        height: 40,
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.grey,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
                             ),
-                          );
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.black,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: const SizedBox(
+                            width: 15,
+                            height: 15,
+                            child: CircularProgressIndicator(
+                              color: Colors.black,
+                              strokeWidth: 3,
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+                    return SizedBox(
+                      height: 40,
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (formGlobalKey.currentState!.validate()) {
+                            BlocProvider.of<LoginPageCubit>(context).Login(
+                              phoneNumberController.text,
+                              passwordController.text,
+                            );
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.black,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        child: Text(
+                          "Войти",
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(color: Colors.white),
                         ),
                       ),
-                      child: Text(
-                        "Войти",
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium
-                            ?.copyWith(color: Colors.white),
-                      ),
-                    ),
-                  ),
-                  Center(
-                    child: TextButton(
-                      onPressed: () {
-                        BlocProvider.of<LoginPageCubit>(context)
-                            .GoToRegistrationPage();
-                      },
-                      child: Text(
-                        "Еще не зарегистрированы?",
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                    ),
-                  ),
-                ],
+                    );
+                  },
+                ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
