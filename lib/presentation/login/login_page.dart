@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shlagbaum/application/bloc/auth/auth_bloc.dart';
-import 'package:shlagbaum/application/bloc/cubit/login_page_cubit.dart';
+import 'package:shlagbaum/application/bloc/login_page/login_page_cubit.dart';
 
 final phoneNumberController = TextEditingController();
 final formGlobalKey = GlobalKey<FormState>();
@@ -21,7 +21,7 @@ class LoginPage extends StatelessWidget {
             Navigator.pop(context);
           },
           icon: const Icon(
-            Icons.arrow_back_ios_new, 
+            Icons.arrow_back_ios_new,
             color: Colors.black,
           ),
         ),
