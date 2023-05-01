@@ -6,14 +6,9 @@ import 'package:shlagbaum/models/car_number.dart';
 import 'package:shlagbaum/presentation/home/add_guest_page.dart';
 
 class EditGuestPage extends StatelessWidget {
-  int index;
   GuestCarNumber guest;
   final bloc;
-  EditGuestPage(
-      {super.key,
-      required this.index,
-      required this.guest,
-      required this.bloc});
+  EditGuestPage({super.key, required this.guest, required this.bloc});
 
   @override
   Widget build(BuildContext context) {

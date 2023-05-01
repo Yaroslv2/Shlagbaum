@@ -42,6 +42,7 @@ dependencies:
   jwt_decode:
   shared_preferences:
   provider:
+  flutter_hooks:
 
 dev_dependencies:
   flutter_test:

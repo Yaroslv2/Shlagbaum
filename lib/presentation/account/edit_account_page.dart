@@ -12,6 +12,15 @@ class EditAccountInfoPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(
+            Icons.arrow_back_ios_new,
+            color: Colors.black,
+          ),
+        ),
         title: Text(
           "Изменить номер",
           style: Theme.of(context)
@@ -19,6 +28,7 @@ class EditAccountInfoPage extends StatelessWidget {
               .headlineMedium!
               .copyWith(fontSize: 24),
         ),
+        centerTitle: true,
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),

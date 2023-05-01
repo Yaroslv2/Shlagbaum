@@ -51,7 +51,7 @@ class _GuestFormState extends State<GuestForm> {
   final carNumberController = TextEditingController();
   var oneVizit = true;
   final keyForm = GlobalKey<FormState>();
-  String _dropDownValue = "легковой";
+  String _dropDownValue = "Легковой";
 
   List<String> _dropItems = ["Легковой", "Грузовой"];
 
@@ -133,7 +133,7 @@ class _GuestFormState extends State<GuestForm> {
                     style: Theme.of(context).textTheme.bodyMedium,
                   )
                 : Text(
-                    _dropDownValue!,
+                    _dropDownValue,
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
             items: _dropItems
