@@ -3,6 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shlagbaum/application/bloc/add_guest/add_guest_cubit.dart';
 import 'package:shlagbaum/application/bloc/home_page/home_page_bloc.dart';
 import 'package:shlagbaum/application/service/server_info.dart';
+import 'package:shlagbaum/application/widgets/car_number_validate.dart';
+import 'package:shlagbaum/application/widgets/upper_case_input_formatter.dart';
+import 'package:shlagbaum/models/dropdown_tems.dart';
 
 class AddNewGuest extends StatelessWidget {
   final bloc;
@@ -53,8 +56,6 @@ class _GuestFormState extends State<GuestForm> {
   final keyForm = GlobalKey<FormState>();
   String _dropDownValue = "Легковой";
 
-  List<String> _dropItems = ["Легковой", "Грузовой"];
-
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -63,8 +64,9 @@ class _GuestFormState extends State<GuestForm> {
         children: [
           Padding(
               padding: EdgeInsets.only(
-                  top: MediaQuery.of(context).size.height * 0.2)),
+                  top: MediaQuery.of(context).size.height * 0.17)),
           TextFormField(
+            textCapitalization: TextCapitalization.words,
             controller: nameController,
             cursorColor: Colors.black,
             decoration: InputDecoration(
@@ -114,8 +116,17 @@ class _GuestFormState extends State<GuestForm> {
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
+            inputFormatters: [
+              UpperCaseTextFormatter(),
+            ],
             validator: (value) {
-              if (value == null || value.isEmpty || value.length < 7) {
+              if (value == null || value.isEmpty) {
+                return "Пожалуйста, заполните это поле";
+              } else if (value.length == 6 &&
+                  RegExp(r"^[АВЕКМНОРСТУХ]{1}[0-9]{3}[АВЕКМНОРСТУХ]{2}$")
+                      .hasMatch(value)) {
+                return "Укажите регион";
+              } else if (value.length < 6 || !carNumberValidate(value)) {
                 return "Некорректный номер машины";
               }
               return null;
@@ -126,32 +137,43 @@ class _GuestFormState extends State<GuestForm> {
             "Тип автомобиля",
             style: Theme.of(context).textTheme.bodyMedium,
           ),
-          DropdownButton(
-            hint: _dropDownValue == null
-                ? Text(
-                    _dropItems[0],
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  )
-                : Text(
-                    _dropDownValue,
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-            items: _dropItems
-                .map((val) => DropdownMenuItem(
-                    value: val,
-                    child: Text(
-                      val,
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    )))
-                .toList(),
-            isExpanded: true,
-            iconSize: 30,
-            elevation: 0,
-            onChanged: (val) {
-              setState(() {
-                _dropDownValue = val!;
-              });
-            },
+          InputDecorator(
+            decoration: InputDecoration(
+                border:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+                contentPadding: const EdgeInsets.symmetric(
+                  vertical: 5,
+                  horizontal: 10,
+                )),
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton(
+                hint: _dropDownValue == null
+                    ? Text(
+                        carTypeDropItems[0],
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      )
+                    : Text(
+                        _dropDownValue,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                items: carTypeDropItems
+                    .map((val) => DropdownMenuItem(
+                        value: val,
+                        child: Text(
+                          val,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        )))
+                    .toList(),
+                isExpanded: true,
+                iconSize: 30,
+                elevation: 8,
+                onChanged: (val) {
+                  setState(() {
+                    _dropDownValue = val!;
+                  });
+                },
+              ),
+            ),
           ),
           Padding(padding: EdgeInsets.symmetric(vertical: 10)),
           Row(

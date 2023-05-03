@@ -82,8 +82,8 @@ class _ChangePasswordFormState extends State<ChangePasswordForm> {
               ),
             ),
             validator: (value) {
-              if (value == null || value.isEmpty || value.length < 7) {
-                return "Некорректный пароль";
+              if (value == null || value.isEmpty) {
+                return "Пожалуйста, заполните это поле";
               }
               return null;
             },
@@ -112,11 +112,23 @@ class _ChangePasswordFormState extends State<ChangePasswordForm> {
               ),
             ),
             validator: (value) {
-              if (value == null || value.isEmpty || value.length < 7) {
+              if (value == null || value.isEmpty) {
+                return "Пожалуйста, заполните это поле";
+              } else if (!RegExp(r"[0-9a-zA-z]").hasMatch(value)) {
                 return "Некорректный пароль";
               }
               return null;
             },
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              "Новый пароль должен быть не менее 8 символов, содержать строчные и заглавные буквы латинского алфавита и цифры.",
+              style: Theme.of(context)
+                  .textTheme
+                  .bodySmall!
+                  .copyWith(color: Colors.grey),
+            ),
           ),
           Padding(padding: EdgeInsets.symmetric(vertical: 15)),
           BlocProvider(

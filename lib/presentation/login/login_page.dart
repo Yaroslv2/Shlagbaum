@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shlagbaum/application/bloc/auth/auth_bloc.dart';
 import 'package:shlagbaum/application/bloc/login_page/login_page_cubit.dart';
+import 'package:shlagbaum/application/widgets/phone_number_validate.dart';
 
 final phoneNumberController = TextEditingController();
 final formGlobalKey = GlobalKey<FormState>();
@@ -145,10 +146,7 @@ class __LoginFormState extends State<_LoginForm> {
         children: [
           TextFormField(
             controller: phoneNumberController,
-            //keyboardType: TextInputType.phone,
-            // inputFormatters: [
-            //   FilteringTextInputFormatter.digitsOnly,
-            // ],
+            keyboardType: TextInputType.phone,
             decoration: InputDecoration(
               label: Text(
                 "Телефон",
@@ -168,8 +166,10 @@ class __LoginFormState extends State<_LoginForm> {
               ),
             ),
             validator: (value) {
-              if (value == null || value.isEmpty || value.length < 11) {
-                return 'Неправильный номер';
+              if (value == null || value.isEmpty) {
+                return 'Пожалуйста, заполните это поле';
+              } else if (!phoneNumberValidate(value)) {
+                return 'Некорректный номер';
               }
               return null;
             },
@@ -201,8 +201,8 @@ class __LoginFormState extends State<_LoginForm> {
             ),
             cursorColor: Colors.black,
             validator: (value) {
-              if (value == null || value.isEmpty || value.length < 8) {
-                return 'Некорректный пароль';
+              if (value == null || value.isEmpty) {
+                return 'Пожалуйста, заполните это поле';
               }
               return null;
             },

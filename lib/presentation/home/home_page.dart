@@ -124,56 +124,6 @@ class HomePageSussess extends HookWidget {
   }
 }
 
-// class HomePageSussess extends StatelessWidget {
-//   const HomePageSussess({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final bloc = BlocProvider.of<HomePageBloc>(context);
-
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text(
-//           "Гостевые номера",
-//           style: Theme.of(context)
-//               .textTheme
-//               .headlineMedium!
-//               .copyWith(fontSize: 24),
-//         ),
-//         centerTitle: true,
-//       ),
-//       body: RefreshIndicator(
-//         color: Colors.white,
-//         backgroundColor: Colors.black,
-//         onRefresh: () async {
-//           bloc.add(HomePageEvent.lodingPage());
-//         },
-//         child: Padding(
-//           padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-//           child: ListViewBuild(),
-//         ),
-//       ),
-//       floatingActionButton: FloatingActionButton(
-//         onPressed: () {
-//           Navigator.push(
-//             context,
-//             MaterialPageRoute(
-//               builder: ((_) => AddNewGuest(
-//                     bloc: BlocProvider.of<HomePageBloc>(context),
-//                   )),
-//             ),
-//           );
-//         },
-//         backgroundColor: Colors.black,
-//         child: const Icon(
-//           Icons.add_outlined,
-//           color: Colors.white,
-//         ),
-//       ),
-//     );
-//   }
-// }
-
 class ListViewBuild extends StatelessWidget {
   ScrollController scrollController;
   ListViewBuild({required this.scrollController});

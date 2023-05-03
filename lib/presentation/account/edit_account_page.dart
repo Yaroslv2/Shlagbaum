@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shlagbaum/application/bloc/account_page/account_page_bloc.dart';
 import 'package:shlagbaum/application/bloc/change_user_info/change_user_info_cubit.dart';
 import 'package:shlagbaum/application/service/account_page_service.dart';
+import 'package:shlagbaum/application/widgets/phone_number_validate.dart';
 
 class EditAccountInfoPage extends StatelessWidget {
   final bloc;
@@ -70,6 +71,7 @@ class _EditAccountInfoFormState extends State<EditAccountInfoForm> {
           ),
           TextFormField(
             controller: _phoneController,
+            keyboardType: TextInputType.phone,
             cursorColor: Colors.black,
             decoration: InputDecoration(
               label: Text(
@@ -92,6 +94,8 @@ class _EditAccountInfoFormState extends State<EditAccountInfoForm> {
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return "Пожалуйста, заполните это поле";
+              } else if (!phoneNumberValidate(value)) {
+                return "Некорректный номер телефона";
               }
               return null;
             },

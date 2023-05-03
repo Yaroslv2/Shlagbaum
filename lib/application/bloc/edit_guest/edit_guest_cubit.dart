@@ -23,7 +23,8 @@ class EditGuestCubit extends Cubit<EditGuestState> {
   final Storage _storage = Storage();
   EditGuestCubit() : super(EditGuestWaitingUser());
 
-  Future edit(int id, String name, String carNumber, bool oneTime) async {
+  Future edit(int id, String name, String carNumber, bool oneTime,
+      String carType) async {
     emit(EditGuestLoading());
 
     final token = await _storage.getTokenInStorage();
@@ -35,6 +36,7 @@ class EditGuestCubit extends Cubit<EditGuestState> {
         "guest_name": name,
         "car_num": carNumber,
         "one_time_visit": oneTime,
+        "car_type": carType,
       },
     };
 
