@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shlagbaum/application/bloc/edit_guest/edit_guest_cubit.dart';
 import 'package:shlagbaum/application/bloc/home_page/home_page_bloc.dart';
 import 'package:shlagbaum/application/widgets/car_number_validate.dart';
+import 'package:shlagbaum/application/widgets/upper_case_input_formatter.dart';
 import 'package:shlagbaum/models/car_number.dart';
 import 'package:shlagbaum/models/dropdown_tems.dart';
 import 'package:shlagbaum/presentation/home/add_guest_page.dart';
@@ -101,6 +102,9 @@ class _EditFormState extends State<EditForm> {
           ),
           Padding(padding: EdgeInsets.symmetric(vertical: 10)),
           TextFormField(
+            inputFormatters: [
+              UpperCaseTextFormatter(),
+            ],
             controller: carNumberController,
             cursorColor: Colors.black,
             decoration: InputDecoration(

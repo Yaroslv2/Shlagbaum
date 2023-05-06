@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:shlagbaum/application/bloc/home_page/home_page_bloc.dart';
 import 'package:shlagbaum/application/service/home_page_sevice.dart';
-import 'package:shlagbaum/application/widgets/home/scroll_for_animation_controller.dart';
+import 'package:shlagbaum/application/widgets/scroll_for_animation_controller.dart';
 import 'package:shlagbaum/presentation/home/add_guest_page.dart';
 import 'package:shlagbaum/presentation/home/edit_guest_page.dart';
 
