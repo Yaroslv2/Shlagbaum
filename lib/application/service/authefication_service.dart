@@ -26,7 +26,6 @@ class AuthService {
       return false;
     } else {
       token = await _storage.getTokenInStorage();
-      print(token);
       if (Jwt.isExpired(token)) {
         return false;
       }

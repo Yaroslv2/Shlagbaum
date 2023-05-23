@@ -32,18 +32,11 @@ class AccountPage extends StatelessWidget {
           child: BlocListener<AccountPageBloc, AccountPageState>(
             listener: (context, state) {
               if (state.state == accountState.errorMessage) {
-                SnackBar snackBar;
-                if (state.errorMessage != null) {
-                  snackBar = SnackBar(
-                    content: Text(state.errorMessage!),
-                    backgroundColor: Colors.red,
-                  );
-                } else {
-                  snackBar = const SnackBar(
-                    content: Text("Непредвиденная ошибка, попробуйте позже"),
-                    backgroundColor: Colors.red,
-                  );
-                }
+                SnackBar snackBar = SnackBar(
+                  content: Text(state.errorMessage ??
+                      "Непредвиденная ошибка, попробуйте позже"),
+                  backgroundColor: Colors.red,
+                );
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
               }
             },
